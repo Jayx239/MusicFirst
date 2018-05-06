@@ -1,4 +1,7 @@
-package application.models;
+package application.models.member;
+
+import application.models.MemberRole;
+import application.models.User;
 
 import javax.persistence.*;
 
@@ -6,18 +9,18 @@ import javax.persistence.*;
 @Table(name="member")
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long memberId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected long memberId;
 
     @OneToOne
     @JoinColumn(name="user_userid")
-    private User user;
+    protected User user;
 
     @ManyToOne
     @JoinColumn(name="memberrole_rolecode")
-    private MemberRole role;
+    protected MemberRole role;
 
-    private String membershipName;
+    protected String membershipName;
 
     public String getMembershipName() {
         return membershipName;

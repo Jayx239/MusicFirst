@@ -1,12 +1,10 @@
 package application.models.registration;
 
-import application.models.Member;
+import application.models.member.Member;
 import application.models.MemberRole;
-import application.models.User;
 import application.models.validation.Validate;
 import application.models.validation.ValidationResult;
 import application.repositories.MemberRepository;
-import application.repositories.UserRepository;
 
 public class MemberValidate extends Validate implements IRegister {
 

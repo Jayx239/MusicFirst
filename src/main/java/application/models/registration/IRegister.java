@@ -4,6 +4,9 @@ public interface IRegister {
     int minimumAge = 13;
     int maxUserNameSize = 36;
     int minUserNameSize = 3;
-    String passwordRegex = "^[a-z0-9-_?.@.!]{"+ minUserNameSize + "," + maxUserNameSize + "}$";
-    String userNameRegex= "[a-zA-Z_@0-9.#$]{3,32}";
+    int maxPasswordSize = 36;
+    int minPasswordSize = 5;
+
+    String passwordRegex = "[a-zA-Z0-9-_@?#$!%^&*()]{" + minPasswordSize + "," + maxPasswordSize + "}";
+    String userNameRegex= "[a-zA-Z_@0-9.#$]{" + minUserNameSize + "," + maxUserNameSize+"}";
 }

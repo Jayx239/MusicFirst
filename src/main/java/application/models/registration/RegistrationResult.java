@@ -1,6 +1,6 @@
 package application.models.registration;
 
-import application.models.Member;
+import application.models.member.Member;
 import application.models.validation.ValidationResult;
 
 public class RegistrationResult extends ValidationResult {

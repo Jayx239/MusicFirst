@@ -1,29 +1,17 @@
-package application.models;
+package application.models.registration;
 
-import javax.persistence.*;
-
-
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+public class RegistrationRequest {
 
     private String firstName;
-
     private String middleName;
-
     private String lastName;
-
     private String email;
-
-    private Integer birthMonth;
-
-    private Integer birthDay;
-
-    private Integer birthYear;
-
-    private Integer active;
+    private int birthMonth;
+    private int birthDay;
+    private int birthYear;
+    private int active;
+    private String userName;
+    private String password;
 
     public String getFirstName() {
         return firstName;
@@ -57,36 +45,51 @@ public class User {
         this.email = email;
     }
 
-    public Integer getBirthMonth() {
+    public int getBirthMonth() {
         return birthMonth;
     }
 
-    public void setBirthMonth(Integer birthMonth) {
+    public void setBirthMonth(int birthMonth) {
         this.birthMonth = birthMonth;
     }
 
-    public Integer getBirthDay() {
+    public int getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(Integer birthDay) {
+    public void setBirthDay(int birthDay) {
         this.birthDay = birthDay;
     }
 
-    public Integer getBirthYear() {
+    public int getBirthYear() {
         return birthYear;
     }
 
-    public void setBirthYear(Integer birthYear) {
+    public void setBirthYear(int birthYear) {
         this.birthYear = birthYear;
     }
 
-    public Integer getActive() {
+    public int getActive() {
         return active;
     }
 
-    public void setActive(Integer active) {
+    public void setActive(int active) {
         this.active = active;
     }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
