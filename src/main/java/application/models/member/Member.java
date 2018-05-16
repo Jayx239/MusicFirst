@@ -1,9 +1,13 @@
 package application.models.member;
 
+import application.models.Credential;
 import application.models.MemberRole;
+import application.models.SecurityRole;
 import application.models.User;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Vector;
 
 @Entity
 @Table(name="member")
@@ -16,26 +20,34 @@ public class Member {
     @JoinColumn(name="user_userid")
     protected User user;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(name="credential_credentialid")
+    protected Credential credential;
+
+    @ManyToMany
     @JoinColumn(name="memberrole_rolecode")
-    protected MemberRole role;
+    private List<MemberRole> memberRoles = new Vector<MemberRole>();
 
-    protected String membershipName;
+    @ManyToMany
+    @JoinColumn(name="securityrole_rolecode")
+    private List<SecurityRole> securityRoles = new Vector<SecurityRole>();
 
-    public String getMembershipName() {
-        return membershipName;
+    protected String userName;
+
+    public String getUserName() {
+        return userName;
     }
 
-    public void setMembershipName(String membershipName) {
-        this.membershipName = membershipName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public MemberRole getRole() {
-        return role;
+    public List<MemberRole> getMemberRoles() {
+        return memberRoles;
     }
 
-    public void setRole(MemberRole role) {
-        this.role = role;
+    public void setMemberRoles(List<MemberRole> memberRoles) {
+        this.memberRoles = memberRoles;
     }
 
     public long getMemberId() {
@@ -52,6 +64,22 @@ public class Member {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<SecurityRole> getSecurityRoles() {
+        return securityRoles;
+    }
+
+    public void setSecurityRoles(List<SecurityRole> securityRoles) {
+        this.securityRoles = securityRoles;
+    }
+
+    public Credential getCredential() {
+        return credential;
+    }
+
+    public void setCredential(Credential credential) {
+        this.credential = credential;
     }
 
 }

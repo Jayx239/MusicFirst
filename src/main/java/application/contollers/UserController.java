@@ -4,7 +4,7 @@ import application.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import application.repositories.UserRepository;
+import application.repository.UserRepository;
 
 import java.util.Optional;
 

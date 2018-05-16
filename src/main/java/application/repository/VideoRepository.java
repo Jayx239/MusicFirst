@@ -1,4 +1,4 @@
-package application.repositories;
+package application.repository;
 
 import application.models.media.Video;
 import org.springframework.data.mongodb.repository.MongoRepository;

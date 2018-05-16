@@ -4,7 +4,7 @@ import application.models.member.Member;
 import application.models.MemberRole;
 import application.models.validation.Validate;
 import application.models.validation.ValidationResult;
-import application.repositories.MemberRepository;
+import application.repository.MemberRepository;
 
 public class MemberValidate extends Validate implements IRegister {
 
@@ -67,7 +67,7 @@ public class MemberValidate extends Validate implements IRegister {
         if(!isValidUserName())
             return false;
 
-        Iterable<Member> memberMatches = memberRepository.getAllByMembershipName(userName);
+        Iterable<Member> memberMatches = memberRepository.findAllByUserName(userName);
         if(memberMatches != null && memberMatches.iterator() != null && memberMatches.iterator().hasNext()) {
             result.getErrorMessages().add("User Name already in use");
             return false;

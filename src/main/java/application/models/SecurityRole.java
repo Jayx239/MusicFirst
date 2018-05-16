@@ -1,16 +1,17 @@
 package application.models;
 
+
 import javax.persistence.*;
 
 @Entity
-@Table(name="memberrole")
-public class MemberRole {
+@Table(name="securityrole")
+public class SecurityRole {
 
-    public MemberRole() {
+    public SecurityRole() {
 
     }
 
-    public MemberRole(String roleCode) {
+    public SecurityRole(String roleCode) {
         this.roleCode = roleCode;
     }
 
@@ -35,5 +36,4 @@ public class MemberRole {
     public void setRoleCode(String roleCode) {
         this.roleCode = roleCode;
     }
-
 }

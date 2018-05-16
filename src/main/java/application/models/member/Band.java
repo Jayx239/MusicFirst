@@ -1,4 +1,13 @@
-package application.models.roles;
+package application.models.member;
 
-public class Bank {
+import javax.persistence.Id;
+import java.util.List;
+
+public class Band extends Member {
+
+    private String name;
+
+    private List<Member> members;
+
+
 }

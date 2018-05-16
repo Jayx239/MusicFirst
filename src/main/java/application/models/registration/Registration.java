@@ -1,23 +1,27 @@
 package application.models.registration;
 
 import application.models.Credential;
+import application.models.SecurityRole;
 import application.models.member.Member;
 import application.models.User;
-import application.repositories.CredentialRepository;
-import application.repositories.MemberRepository;
-import application.repositories.UserRepository;
+import application.repository.*;
 
 public class Registration implements IRegister {
 
-    public Registration(MemberRepository memberRepository, UserRepository userRepository, CredentialRepository credentialRepository) {
+    public Registration(MemberRepository memberRepository, UserRepository userRepository, CredentialRepository credentialRepository, SecurityRoleRepository securityRoleRepository, MemberRoleRepository memberRoleRepository) {
         this.memberRepository = memberRepository;
         this.userRepository = userRepository;
         this.credentialRepository = credentialRepository;
+        this.securityRoleRepository = securityRoleRepository;
+        this.memberRoleRepository = memberRoleRepository;
     }
 
     private UserRepository userRepository;
     private MemberRepository memberRepository;
     private CredentialRepository credentialRepository;
+    private SecurityRoleRepository securityRoleRepository;
+    private MemberRoleRepository memberRoleRepository;
+
     private RegistrationResult result;
 
     public RegistrationResult registerUser(User user, String userName, String password) {
@@ -43,15 +47,17 @@ public class Registration implements IRegister {
 
         userRepository.save(user);
 
-        Member member = new Member();
-        member.setUser(user);
-        member.setMembershipName(userName);
-        memberRepository.save(member);
-
         Credential credential = new Credential();
         credential.trySetPassword(password);
-        credential.setMember(member);
         credentialRepository.save(credential);
+
+        Member member = new Member();
+        member.setUser(user);
+        member.setUserName(userName);
+        member.setCredential(credential);
+        member.getSecurityRoles().add(securityRoleRepository.findByRoleCode("STANDARD"));
+        member.getMemberRoles().add(memberRoleRepository.findByRoleCode("USER"));
+        memberRepository.save(member);
 
         result.setMember(member);
         return result;

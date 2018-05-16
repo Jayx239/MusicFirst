@@ -1,13 +1,13 @@
 package application.models;
 
 import application.models.member.Member;
+import application.models.registration.BCryptPasswordEncoderSingleton;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Random;
 
 @Entity
@@ -18,13 +18,9 @@ public class Credential {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long credentialId;
 
-    @OneToOne
-    @JoinColumn(name="member_memberId")
-    private Member member;
+    private String passwordHash;
 
-    private byte[] passwordHash;
-
-    private byte[] passwordSalt;
+    private String passwordSalt;
 
     public long getCredentialId() {
         return credentialId;
@@ -34,36 +30,32 @@ public class Credential {
         this.credentialId = credentialId;
     }
 
-    public Member getMember() {
-        return member;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
-
-    public byte[] getPasswordHash() {
+    public String getPasswordHash() {
         return passwordHash;
     }
 
-    public void setPasswordHash(byte[] passwordHash) {
+    public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
     }
 
-    public byte[] getPasswordSalt() {
+    public String getPasswordSalt() {
         return passwordSalt;
     }
 
-    public void setPasswordSalt(byte[] passwordSalt) {
+    public void setPasswordSalt(String passwordSalt) {
         this.passwordSalt = passwordSalt;
+    }
+
+    public String getBcrpyPasswordHash() {
+        return "{bcrypt}" + passwordHash;
     }
 
     public boolean trySetPassword(String password)  {
 
-        byte[] salt = generateSalt(32);
-        byte[] saltedPassword = passwordSalt(password,salt);
+        String salt = generateSalt(32);
+        String saltedPassword = password + salt;
+        String hash = generateHash(password);
 
-        byte[] hash = generateHash(saltedPassword);
         if(hash == null) {
             return false;
         } else {
@@ -73,40 +65,23 @@ public class Credential {
         }
     }
 
-    private byte[] passwordSalt(String password, byte[] salt) {
-        byte[] passwordByte = password.getBytes();
-        byte[] saltedPassword = new byte[salt.length + passwordByte.length];
-
-        System.arraycopy(passwordByte,0,saltedPassword,0,passwordByte.length);
-        System.arraycopy(salt,0,saltedPassword,0,salt.length);
-        return saltedPassword;
-    }
-
-    private byte[] generateSalt(int size) {
+    private String generateSalt(int size) {
         Random random = new SecureRandom();
+
         byte[] salt = new byte[size];
         random.nextBytes(salt);
-        return salt;
+
+        String saltString = new String(salt, Charset.forName("UTF-8"));
+        return saltString;
     }
 
-    private byte[] generateHash(byte[] saltedPassword) {
-
-        byte[] hash = null;
-        try {
-            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-            hash = sha256.digest(saltedPassword);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            System.out.println("Error generating hash");
-        } finally {
-            return hash;
-        }
+    private String generateHash(String saltedPassword) {
+        return BCryptPasswordEncoderSingleton.getInstance().encode(saltedPassword);
     }
 
     public boolean matches(String password) {
-        byte[] saltedPassword = passwordSalt(password,this.passwordSalt);
-        byte[] passwordHash = generateHash(saltedPassword);
+        String saltedPassword = password;
 
-        return Arrays.equals(passwordHash,this.passwordHash);
+        return BCryptPasswordEncoderSingleton.getInstance().matches(saltedPassword,passwordHash);
     }
 }
