@@ -4,9 +4,7 @@ import application.models.User;
 import application.models.registration.Registration;
 import application.models.registration.RegistrationRequest;
 import application.models.validation.ValidationResult;
-import application.repositories.CredentialRepository;
-import application.repositories.MemberRepository;
-import application.repositories.UserRepository;
+import application.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +24,11 @@ public class RegisterController {
     @Autowired
     private CredentialRepository credentialRepository;
 
+    @Autowired
+    private SecurityRoleRepository securityRoleRepository;
+
+    @Autowired
+    private MemberRoleRepository memberRoleRepository;
 
     @PostMapping(path="/clientSubmit")
     public @ResponseBody
@@ -71,7 +74,7 @@ public class RegisterController {
         newUser.setBirthYear(birthYear);
         newUser.setActive(active);
 
-        registration = new Registration(memberRepository,userRepository, credentialRepository);
+        registration = new Registration(memberRepository,userRepository, credentialRepository,securityRoleRepository, memberRoleRepository);
         ValidationResult result = registration.registerUser(newUser, userName, password);
 
         if(result.isSuccessful())

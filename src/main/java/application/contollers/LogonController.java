@@ -3,9 +3,9 @@ package application.contollers;
 import application.models.Credential;
 import application.models.logon.LogonCredentialRequest;
 import application.models.member.Member;
-import application.repositories.CredentialRepository;
-import application.repositories.MemberRepository;
-import application.repositories.UserRepository;
+import application.repository.CredentialRepository;
+import application.repository.MemberRepository;
+import application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +38,13 @@ public class LogonController {
 
     private @ResponseBody
     String logonUser(String userName, String password) {
-        Member member = memberRepository.getMemberByMembershipName(userName);
+        Member member = memberRepository.findByUserName(userName);
         if(member == null)
             return "/logon";
 
-        Credential credential = credentialRepository.findCredentialByMember(member);
+        Credential credential = member.getCredential();
         if(credential == null) {
-            System.out.println("Error finding user credentials for userName: " + member.getMembershipName());
+            System.out.println("Error finding user credentials for userName: " + member.getUserName());
             return "/logon";
         }
 
@@ -60,6 +60,11 @@ public class LogonController {
     @GetMapping(path="/logon")
     public @ResponseBody
     String logon() {
+        return "logon";
+    }
+    @GetMapping(path="/")
+    public @ResponseBody
+    String index() {
         return "logon";
     }
 }

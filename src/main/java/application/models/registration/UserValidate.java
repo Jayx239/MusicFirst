@@ -2,7 +2,7 @@ package application.models.registration;
 
 import application.models.User;
 import application.models.validation.ValidationResult;
-import application.repositories.UserRepository;
+import application.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
